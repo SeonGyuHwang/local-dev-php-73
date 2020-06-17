@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+    nginx-proxy:
+        image: jwilder/nginx-proxy
+        container_name: nginx-proxy
+        restart: always
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - /var/run/docker.sock:/tmp/docker.sock:ro
+            #- $PWD/etc/certs:/etc/nginx/certs
+            #- $PWD/etc/conf/location.conf:/etc/nginx/vhost.d/default_location
+
+    my-project:
+        image: hsg377/php73:latest
+        container_name: my-project
+        environment:
+            - IS_DEV=Y
+            - IS_LOCAL=Y
+            - VIRTUAL_HOST=my.project.co.kr
+        volumes:
+            - /mnt/d/workspace/my_project:/var/www/html
